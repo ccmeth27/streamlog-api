@@ -83,12 +83,17 @@ class Api::V1::UserProgramsController < ApplicationController
     end
   end
 
+  
+
   def seen_program
-    user_program = UserProgram.find_by(params[:id])
-    user_program.update_all "is_seen = 1, is_watchlist = 0"
+    user_program = UserProgram.find_by(
+      user_id: params[:user_id],
+      imdb_id: params[:imdb_id],
+      )
+    user_program.update_attributes(update_params)
     if user_program.save!
       render json: {
-        status: :created,
+        status: :updated,
         user_program: user_program,
       }
     else 
@@ -100,11 +105,14 @@ class Api::V1::UserProgramsController < ApplicationController
   end
 
   def remove_program
-    user_program = UserProgram.find_by(params[:id])
-    user_program.update_all "is_seen = 1, is_watchlist = 0"
+    user_program = UserProgram.find_by(
+      user_id: params[:user_id],
+      imdb_id: params[:imdb_id],
+      )
+    user_program.update_attributes(update_params)
     if user_program.save!
       render json: {
-        status: :created,
+        status: :updated,
         user_program: user_program,
       }
     else 
@@ -125,4 +133,9 @@ class Api::V1::UserProgramsController < ApplicationController
     user_program.destroy
   end
 
+  private
+
+  def update_params
+    params.require(:user_program).permit(:user_id, :imdb_id, :is_seen, :is_watchlist, :is_rejected, :poster, :title, :release_year, :is_movie)
+  end
 end #end of user programs controller

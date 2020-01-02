@@ -5,8 +5,8 @@ Rails.application.routes.draw do
       resources :user_programs, only: [:index, :show, :create]
       resources :subscriptions, only: [:create]
       get '/show_subscriptions/:user_id', to: 'subscriptions#show_subscriptions'
-      post '/watched_program/:id', to: 'user_programs#seen_program'
-      post '/remove_program/:id', to: 'user_programs#remove_program'
+      post '/watched_program/:user_id', to: 'user_programs#seen_program'
+      post '/remove_program/:user_id', to: 'user_programs#remove_program'
       post '/delete_seen/:id', to: 'user_programs#destroy_seen_program'
       post '/delete_removed/:id', to: 'user_programs#destroy_removed_program'
       get '/series_watchlist/:user_id', to: 'user_programs#series_watchlist'
